@@ -1,0 +1,9 @@
+1. Select set members of 'bakeSet'
+
+2. Edit - Keys - Bake Simulation
+
+3. Select set members of 'exportSet'
+
+4. File-Export Selection or Send to unreal-Selection
+
+5. Export now your .fbx as usual

@@ -1,0 +1,20 @@
+eval("source \""+ $PathProject + "sub_main.mel\"");
+global proc KTL_UI(string $Path,string $nScript){
+    
+    string $windowUI ;
+    $windowUI = "Kaju_Tools_v1";
+    if (`window -ex $windowUI`) deleteUI $windowUI;
+    if (`dockControl -ex $windowUI`) deleteUI $windowUI ;
+    $windowUI = `loadUI -uiFile (""+ $Path + "/UI_.ui")`;
+    string $DC_UIs = `dockControl -aa "all" -a "left" -fl on -w 220  -con $windowUI -l "Kaju Tools v1" $windowUI` ;
+    //showWindow $windowUI ;
+
+    //radioButton -e  -onc "rb_func_hik mode_fk" rb_FK_hik;  
+    //radioButton -e  -onc "rb_func_hik mode_ik" rb_IK_hik;  
+
+    print ($nScript + " -- © 2020 Indy Rigger") ;
+}
+KTL_UI($PathProject,$nameScript);
+
+//string $Path = $PathProject;
+//string $nScript = $nameScript;

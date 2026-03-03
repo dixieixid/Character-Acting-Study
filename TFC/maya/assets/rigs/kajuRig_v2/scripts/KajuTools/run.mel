@@ -1,0 +1,5 @@
+string $nameScript = "KajuTools";
+string $Path = `internalVar -usd`;
+string $PathProject = ($Path + $nameScript + "/scripts/");
+
+eval("source \""+ $PathProject + "Main.mel\"");

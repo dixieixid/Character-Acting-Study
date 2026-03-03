@@ -1,0 +1,706 @@
+global proc Kaju_Contact(){
+    launch -web "https://www.gameanimationacademy.com/";
+}
+
+global proc Kaju_matchPos(string $type,string $mom, string $child){
+    if($type == "Pos"){
+        $pos = `xform -q -ws -rp $mom`;
+        move -rpr $pos[0] $pos[1] $pos[2] $child;
+    }
+    if($type == "Rot"){
+        $rot = `xform -q -ws -ro $mom`;
+        rotate -a -ws $rot[0] $rot[1] $rot[2] $child; 
+    }
+    if($type == "all"){
+        $pos = `xform -q -ws -rp $mom`;
+        $rot = `xform -q -ws -ro $mom`;
+        move -rpr $pos[0] $pos[1] $pos[2] $child;     
+        rotate -a -ws $rot[0] $rot[1] $rot[2] $child;    
+    }
+}
+
+global proc string Kaju_getNameSpace(){
+    string $buffer[],$allNsp[],$nSp;	
+
+ 	namespace -set ":";
+	$allNsp = `namespaceInfo  -lon -r`; 	
+	for($i=0; $i < size($allNsp); $i++){
+        if( `objExists ($allNsp[$i] + ":" + "master_CTL")` == 1) {
+            $nSp = ($allNsp[$i] + ":");
+        }
+    }    
+    return $nSp;
+}
+
+global proc Kaju_IKtoFK(string $Pos, string $ctrl){
+
+    string $labal[],$loc ;
+    string $arm[] = {("wrist_FK_" + $Pos + "_snap"),("hand_" + $Pos + "_CTL"),("armPole_" + $Pos + "_CTL")} ;
+    string $leg[] = {("ankle_FK_" + $Pos + "_snap"),("foot_" + $Pos + "_CTL"),("legPole_" + $Pos + "_CTL")} ;
+    string $locA[] = {("elbow_FK_" + $Pos + "_snap"),("knee_FK_" + $Pos + "_snap")} ;
+    
+    if($ctrl == "arm"){
+        $labal = $arm;
+        $loc = $locA[0] ;
+    }
+    if($ctrl == "leg"){
+        $labal = $leg;
+        $loc = $locA[1] ;
+    }   
+    
+    string $name = Kaju_getNameSpace();
+    $posA = `xform -q -ws -rp ($name + $labal[0])`;
+    $rotA = `xform -q -ws -ro ($name + $labal[0])`;    
+    $posB = `xform -q -ws -rp ($name + $loc)`;
+    $rotB = `xform -q -ws -ro ($name + $loc)`;
+    $posC = `xform -q -ws -rp ($name + "ball_FK_" + $Pos + "_snap")`;
+    $rotC = `xform -q -ws -ro ($name + "ball_FK_" + $Pos + "_snap")`;    
+    $posD = `xform -q -ws -rp ($name + "toe_FK_" + $Pos + "_snap")`;
+    $rotD = `xform -q -ws -ro ($name + "toe_FK_" + $Pos + "_snap")`;         
+    
+    if($ctrl == "arm"){
+        move -rpr $posA[0] $posA[1] $posA[2] ($name + $labal[1]);
+        rotate -a -ws $rotA[0] $rotA[1] $rotA[2] ($name + $labal[1]); 
+        move -rpr $posB[0] $posB[1] $posB[2] ($name + $labal[2]);
+        rotate -a -ws $rotB[0] $rotB[1] $rotB[2] ($name + $labal[2]); 
+    }
+    if($ctrl == "leg"){
+        move -rpr $posA[0] $posA[1] $posA[2] ($name + $labal[1]);
+        rotate -a -ws $rotA[0] $rotA[1] $rotA[2] ($name + $labal[1]); 
+        move -rpr $posC[0] $posC[1] $posC[2] ($name + "ankle_IK_" + $Pos + "_CTL");
+        rotate -a -ws $rotC[0] $rotC[1] $rotC[2] ($name + "ankle_IK_" + $Pos + "_CTL"); 
+        move -rpr $posD[0] $posD[1] $posD[2] ($name + "toe_IK_" + $Pos + "_CTL");
+        rotate -a -ws $rotD[0] $rotD[1] $rotD[2] ($name + "toe_IK_" + $Pos + "_CTL"); 
+        move -rpr $posB[0] $posB[1] $posB[2] ($name + $labal[2]);
+        rotate -a -ws $rotB[0] $rotB[1] $rotB[2] ($name + $labal[2]); 
+  
+    }
+}
+
+global proc Kaju_FKtoIK(string $Pos, string $ctrl){
+    string $labal[],$labalCTL[] ;
+    string $arm[] = {("shoulder_IK_" + $Pos),("elbow_IK_" + $Pos),("wrist_IK_" + $Pos + "_snap")} ;
+    string $leg[] = {("hip_IK_" + $Pos),("knee_IK_" + $Pos),("foot_IK_" + $Pos + "_snap"),("ankle_IK_" + $Pos + "_snap"),("toe_IK_" + $Pos + "_snap")} ;    
+    string $armCTL[] = {("shoulder_FK_" + $Pos + "_CTL"),("elbow_FK_" + $Pos + "_CTL"),("wrist_FK_" + $Pos + "_CTL")} ;
+    string $legCTL[] = {("hip_FK_" + $Pos + "_CTL"),("knee_FK_" + $Pos + "_CTL"),("ankle_FK_" + $Pos + "_CTL"),("ball_FK_" + $Pos + "_CTL"),("toe_FK_" + $Pos + "_CTL")} ;
+    int $size;
+    
+    if($ctrl == "arm"){
+        $labal = $arm;
+        $labalCTL = $armCTL;
+        $size = 3;
+    }
+    if($ctrl == "leg"){
+        $labal = $leg;
+        $labalCTL = $legCTL;
+        $size = 5;
+    }   
+    
+    string $name = Kaju_getNameSpace();
+    
+    for($i = 0; $i < $size; $i++){
+        $posA = `xform -q -ws -rp ($name + $labal[$i])`;
+        $rotA = `xform -q -ws -ro ($name + $labal[$i])`;    
+        
+        move -rpr $posA[0] $posA[1] $posA[2] ($name + $labalCTL[$i]);
+        rotate -a -ws $rotA[0] $rotA[1] $rotA[2] ($name + $labalCTL[$i]); 
+    }
+}
+
+global proc Kaju_switchIkFk(string $Pos, string $ctrl){ /// "L" "R" // "arm" "leg" // 0 = IK, 1 = FK
+    string $nSp = Kaju_getNameSpace();
+    int $mode;
+    $mode = `getAttr ($nSp + $ctrl + "Setting_" + $Pos + "_CTL.IKFK_blend")`; 
+    if($mode == 0){setAttr ($nSp + $ctrl + "Setting_" + $Pos + "_CTL.IKFK_blend") 1;}
+    if($mode == 1){setAttr ($nSp + $ctrl + "Setting_" + $Pos + "_CTL.IKFK_blend") 0;}
+}
+
+
+
+global proc string[] Kaju_getSelectedChannels(){
+    global string $gChannelBoxName; 
+    string $channelBox,$attrs[];
+    $channelBox = $gChannelBoxName;
+    $attrs = `channelBox -q -sma $channelBox`;
+    return $attrs;
+}
+
+global proc Kaju_setZero(){
+    string $sel[],$nSp,$selAttrs[],$listAttrs[] ;
+    $sel = `ls -sl` ;
+    $selAttrs = Kaju_getSelectedChannels();
+    if(`size($selAttrs)` > 0){
+        for($i=0; $i < size($sel); $i++ ) {
+            $listAttrs = $selAttrs;
+            for($a=0; $a < size($listAttrs); $a++ ) {
+                float $qAttr[] = `attributeQuery -n $sel[$i] -ld $listAttrs[$a]`;
+                setAttr ($sel[$i] + "." + $listAttrs[$a]) $qAttr[0];     
+            }   
+        }
+    }else{
+        for($i=0; $i < size($sel); $i++ ) {
+            $listAttrs = `listAttr -k -m -sn $sel[$i]`;
+            for($a=0; $a < size($listAttrs); $a++ ) {
+                if ($listAttrs[$a] == "tx" || $listAttrs[$a] == "ty" || $listAttrs[$a] == "tz" || 
+                    $listAttrs[$a] == "rx" || $listAttrs[$a] == "ry" || $listAttrs[$a] == "rz" ||
+                    $listAttrs[$a] == "sx" || $listAttrs[$a] == "sy" || $listAttrs[$a] == "sz" ){
+                    float $qAttr[] = `attributeQuery -n $sel[$i] -ld $listAttrs[$a]`;
+                    setAttr ($sel[$i] + "." + $listAttrs[$a]) $qAttr[0];
+                }
+            } 
+        }          
+    }
+}
+
+
+global proc Kaju_MirrorAttrs(){
+    string $sel[],$nSp,$ctlSideA,$ctlSideB,$allAttrs[],$cmd,$itemListArray[];
+    int $flip,$b;
+    
+    $sel = `ls -sl`;
+    $nSp = Kaju_getNameSpace();
+
+    for ($i=0; $i < size($sel); $i++){
+        $ctlSideA = $sel[$i] ;
+        if (`gmatch $ctlSideA "*_L*"`){
+            $ctlSideB =`substitute "_L" $ctlSideA "_R"`;
+        }else if 
+           (`gmatch $ctlSideA "*_R*"`){
+            $ctlSideB =`substitute "_R" $ctlSideA "_L"`;
+        }else{
+            $ctlSideB = $ctlSideA;
+        }
+        
+        $allAttrs =`listAttr -k -m -sn $ctlSideA`;   
+        for ($a=0; $a < size($allAttrs); $a++){           
+            if (`gmatch $ctlSideA ($nSp+"hand_L*")` || `gmatch $ctlSideA ($nSp+"hand_R*")` ||
+                `gmatch $ctlSideA ($nSp+"ribbon*_L*")` || `gmatch $ctlSideA ($nSp+"ribbon*_R*")` ||
+                `gmatch $ctlSideA ($nSp+"ball_IK_L*")` || `gmatch $ctlSideA ($nSp+"ball_IK_R*")` ||
+                `gmatch $ctlSideA ($nSp+"*FK_L*")` || `gmatch $ctlSideA ($nSp+"*FK_R*")` ||
+                `gmatch $ctlSideA ($nSp+"index*_L*")` || `gmatch $ctlSideA ($nSp+"index*_R*")` ||
+                `gmatch $ctlSideA ($nSp+"mid*_L*")` || `gmatch $ctlSideA ($nSp+"mid*_R*")` ||
+                `gmatch $ctlSideA ($nSp+"ring*_L*")` || `gmatch $ctlSideA ($nSp+"ring*_R*")` ||
+                `gmatch $ctlSideA ($nSp+"pinky*_L*")` || `gmatch $ctlSideA ($nSp+"pinky*_R*")` ||
+                `gmatch $ctlSideA ($nSp+"thumb*_L*")` || `gmatch $ctlSideA ($nSp+"thumb*_R*")`){
+                if ($allAttrs[$a] == "tx" || $allAttrs[$a] == "ty" || $allAttrs[$a] == "tz"){ $flip=-1;}
+                else{$flip=1;}
+                $cmd+="setAttr "+$ctlSideB+"."+$allAttrs[$a]+" "+(`getAttr ($ctlSideA+"."+$allAttrs[$a])`*$flip)+";";
+                //print ("Type A");
+            }else if
+               (`gmatch $ctlSideA ($nSp+"legPole_L*")` || `gmatch $ctlSideA ($nSp+"legPole_R*")` ||
+                `gmatch $ctlSideA ($nSp+"armPole_L*")` || `gmatch $ctlSideA ($nSp+"armPole_R*")`  ||
+                `gmatch $ctlSideA ($nSp+"hip_IK_L*")` || `gmatch $ctlSideA ($nSp+"hip_IK_R*")`){
+                if ($allAttrs[$a] == "tx"){ $flip=-1;}
+                else{$flip=1;}
+                $cmd+="setAttr "+$ctlSideB+"."+$allAttrs[$a]+" "+(`getAttr ($ctlSideA+"."+$allAttrs[$a])`*$flip)+";";
+                //print ("Type B");
+            }else if
+               (`gmatch $ctlSideA ($nSp+"clav_L*")` || `gmatch $ctlSideA ($nSp+"clav_R*")` ||
+                `gmatch $ctlSideA ($nSp+"shouder_L_CTL*")` || `gmatch $ctlSideA ($nSp+"shouder_R_CTL*")`){
+                $flip=1;
+                $cmd+="setAttr "+$ctlSideB+"."+$allAttrs[$a]+" "+(`getAttr ($ctlSideA+"."+$allAttrs[$a])`*$flip)+";";
+                //print ("Type C");
+            }else if
+               (`gmatch $ctlSideA ($nSp+"foot_L*")` || `gmatch $ctlSideA ($nSp+"foot_R*")`){
+                if ($allAttrs[$a] == "tx" || $allAttrs[$a] == "ry" || $allAttrs[$a] == "rz"){ $flip=-1;}
+                else{$flip=1;}
+                $cmd+="setAttr "+$ctlSideB+"."+$allAttrs[$a]+" "+(`getAttr ($ctlSideA+"."+$allAttrs[$a])`*$flip)+";";
+                //print ("Type D");                         
+            }else if
+                (`gmatch $ctlSideA ($nSp+"eyeLid*_L_CTL")` || `gmatch $ctlSideA ($nSp+"eyeLid*_L_CTL")` ||
+                 `gmatch $ctlSideA ($nSp+"eyeBrow*_L_CTL")` || `gmatch $ctlSideA ($nSp+"eyeBrow*_R_CTL")` ||
+                 `gmatch $ctlSideA ($nSp+"cheek*_L_CTL")` || `gmatch $ctlSideA ($nSp+"cheek*_R_CTL")` ||
+                 `gmatch $ctlSideA ($nSp+"lip*_L_CTL")` || `gmatch $ctlSideA ($nSp+"lip*_R_CTL")` ||
+                 `gmatch $ctlSideA ($nSp+"ear_L*_FK_CTL")` || `gmatch $ctlSideA ($nSp+"ear_R*_FK_CTL")`
+                 ){
+                if ($allAttrs[$a] == "rz"){ $flip=-1;}
+                else{$flip=1;}
+                $cmd+="setAttr "+$ctlSideB+"."+$allAttrs[$a]+" "+(`getAttr ($ctlSideA+"."+$allAttrs[$a])`*$flip)+";";
+                //print ("Type Ef");
+            }else if
+                (`gmatch $ctlSideA $ctlSideA`){
+                if ($allAttrs[$a] == "tx" || $allAttrs[$a] == "ry" || $allAttrs[$a] == "rz"){ $flip=-1;}
+                else{$flip=1;}
+                $cmd+="setAttr "+$ctlSideB+"."+$allAttrs[$a]+" "+(`getAttr ($ctlSideA+"."+$allAttrs[$a])`*$flip)+";";
+                //print ("Type F");
+            }else{
+                $flip=1;
+                $cmd+="setAttr "+$ctlSideB+"."+$allAttrs[$a]+" "+(`getAttr ($ctlSideA+"."+$allAttrs[$a])`*$flip)+";";
+                //print ("Type G");
+            }
+         
+        }
+    }
+    eval ($cmd);
+            
+}
+
+global proc Kaju_snapSpace(){
+    string $sel[] = `ls -sl` ;
+    $time = `currentTime -query`;
+    $time = $time - 1;
+    currentTime $time;
+
+    $grppos = `group -em -n "grp_pos"`;
+    $pos = `xform -q -ws -rp $sel[0]`;
+    $rot = `xform -q -ws -ro $sel[0]`;
+    move -rpr $pos[0] $pos[1] $pos[2] $grppos;
+    rotate -a -ws $rot[0] $rot[1] $rot[2] $grppos; 
+
+
+    $pos = `xform -q -ws -rp $grppos`;
+    $rot = `xform -q -ws -ro $grppos`;
+
+    $time = $time + 1 ;
+    currentTime $time;
+    move -rpr $pos[0] $pos[1] $pos[2] $sel[0];
+    rotate -a -ws $rot[0] $rot[1] $rot[2] $sel[0]; 
+
+    delete $grppos;
+    select -r $sel[0];
+}
+
+global proc Kaju_setPose(string $type){
+    string $nSp;
+    float $posL[],$rotL[],$posR[],$rotR[];
+    
+    $nSp = Kaju_getNameSpace();
+    setAttr ($nSp + "shoulder_FK_L_CTL.Follow") 1;
+    setAttr ($nSp + "shoulder_FK_R_CTL.Follow") 1;
+    
+
+ 
+    if($type == "Tpose"){
+        setAttr ($nSp + "shoulder_FK_R_CTL.rotateZ") 40;
+        setAttr ($nSp + "shoulder_FK_L_CTL.rotateZ") 40;   
+        setAttr ($nSp + "clav_R_CTL.rotateZ") 5;
+        setAttr ($nSp + "clav_L_CTL.rotateZ") 5;    
+        
+        Kaju_IKtoFK("L","arm");
+        Kaju_IKtoFK("R","arm");
+        
+    }    
+    if($type == "Apose"){
+        setAttr ($nSp + "shoulder_FK_R_CTL.rotateZ") 0;
+        setAttr ($nSp + "shoulder_FK_L_CTL.rotateZ") 0;   
+        setAttr ($nSp + "clav_R_CTL.rotateZ") 0;
+        setAttr ($nSp + "clav_L_CTL.rotateZ") 0;     
+        
+        select -r ($nSp + "hand_L_CTL") ;
+        select -tgl ($nSp + "hand_R_CTL") ;
+        select -tgl ($nSp + "armPole_R_CTL") ;
+        select -tgl ($nSp + "armPole_L_CTL") ;
+        
+        Kaju_setZero();
+        select -cl  ;
+    }
+}
+
+global proc Kaju_hikCreateSkeleton(string $namespace){
+	
+	hikSyncSkeletonGeneratorFromUI();
+	hikCreateCharacter( $namespace );
+	string $currentName = hikGetCurrentCharacter();
+	
+	if($currentName != ""){
+		string $skeletonGeneratorNode = `createNode HIKSkeletonGeneratorNode`;
+		setAttr ($skeletonGeneratorNode+".isHistoricallyInteresting") 0;
+		string $outPlug = $skeletonGeneratorNode + ".CharacterNode";
+		string $inPlug = $currentName + ".SkeletonGenerator";
+		connectAttr $outPlug $inPlug;
+
+		hikReadDefaultCharPoseFileOntoSkeletonGeneratorNode($skeletonGeneratorNode);
+		hikSetSkeletonGeneratorDefaults($skeletonGeneratorNode);
+
+		select -r $currentName;
+		hikSetCurrentSource(hikNoneString());
+		hikUpdateCurrentCharacterFromScene();
+		hikUpdateDefinitionUI();
+		hikSelectSkeletonTab();
+		select -cl  ;
+	}
+    select -cl  ;
+}
+
+global proc Kaju_hikDeleteSkeleton(string $namespace){
+	string $character = $namespace;
+	if (size($character) == 0) {
+		error((uiRes("m_hikSkeletonOperations.kNoCharacterFound")));
+		return;
+	}
+	
+	if( `referenceQuery -isNodeReferenced $character` ){
+		warning (uiRes("m_hikSkeletonOperations.kReferencedCharacterDeleteWarning"));
+		return;
+	}
+
+	string $ok		= (uiRes("m_hikSkeletonOperations.kOK"));
+	string $cancel	= (uiRes("m_hikSkeletonOperations.kCancel"));
+	string $result = `confirmDialog
+		-title (uiRes("m_hikSkeletonOperations.kDeleteHikSkeleton"))
+		-message (uiRes("m_hikSkeletonOperations.kAreYouSureMsg"))
+		-button $ok
+		-button $cancel
+		-defaultButton $ok
+		-cancelButton $cancel
+		-dismissString $cancel`;
+	
+	if ( $result != $ok ) {
+		return;
+	}
+    hikDeleteSkeleton_noPrompt();
+}   
+
+global proc Kaju_createHIK(){   
+    string $nHIK;
+    $nHIK = "Kaju";
+    if(`radioButton -q -sl rb_Tpose_Kaju` == 1){Kaju_setPose("Tpose");}
+    if(`radioButton -q -sl rb_Apose_Kaju` == 1){Kaju_setPose("Apose");}
+    // create hik
+    Kaju_hikCreateSkeleton($nHIK); 
+    if(`radioButton -q -sl rb_Tpose_Kaju` == 1){
+        print ("Create HumanIK to T-Pose Kaju Rig complete!" + "\n");
+    }
+    if(`radioButton -q -sl rb_Apose_Kaju` == 1){
+        print ("Create HumanIK to A-Pose Kaju Rig complete!" + "\n");
+    }
+} 
+
+
+global proc Kaju_connectRig(){  
+    string $nHIK,$nSp,$loc;
+    string $rigJNTs[],$txUI[],$txUInew[],$hikJNTs[],$delJNTs[],$hikRgt,$ctlRgt;
+    $nHIK = "Kaju";
+    $nHIK = $nHIK + "_";
+    $nSp = Kaju_getNameSpace();
+
+    $delJNTs = {"LeftHandRing1","RightHandRing1"};
+    for($i=0; $i < size($delJNTs); $i++ ){
+        delete ($nHIK+$delJNTs[$i]);
+    }
+        
+    $hikJNTs = {"Hips","LeftUpLeg","LeftLeg","LeftFoot","LeftToeBase",
+        "RightUpLeg","RightLeg","RightFoot","RightToeBase",
+        "Spine","Spine1","Spine2",
+        "LeftShoulder","LeftArm","LeftForeArm","LeftHand",
+        "RightShoulder","RightArm","RightForeArm","RightHand",
+        "Neck","Head",
+        "RightHandThumb1","RightHandThumb2","RightHandThumb3","RightHandThumb4",
+        "RightHandIndex1","RightHandIndex2","RightHandIndex3","RightHandIndex4",
+        "RightHandMiddle1","RightHandMiddle2","RightHandMiddle3","RightHandMiddle4",
+        "RightHandPinky1","RightHandPinky2","RightHandPinky3","RightHandPinky4",
+        "LeftHandThumb1","LeftHandThumb2","LeftHandThumb3","LeftHandThumb4",
+        "LeftHandIndex1","LeftHandIndex2","LeftHandIndex3","LeftHandIndex4",
+        "LeftHandMiddle1","LeftHandMiddle2","LeftHandMiddle3","LeftHandMiddle4",
+        "LeftHandPinky1","LeftHandPinky2","LeftHandPinky3","LeftHandPinky4"};
+
+    $rigJNTs = {"root_C_BND","hip_L_BND","knee_L_BND","ankle_L_BND","toe_L_BND",
+        "hip_R_BND","knee_R_BND","ankle_R_BND","toe_R_BND",
+        "back02_C_BND","back04_C_BND","chest_C_BND",
+        "clav01_L_BND","shoulder_L_BND","elbow_L_BND","wrist_L_BND",
+        "clav01_R_BND","shoulder_R_BND","elbow_R_BND","wrist_R_BND",
+        "neck_C_BND","head01_C_BND",  
+        "thumb01_R_BND","thumb02_R_BND","thumb03_R_BND","thumb04_R_BND",
+        "index01_R_BND","index02_R_BND","index03_R_BND","index04_R_BND",
+        "middle01_R_BND","middle02_R_BND","middle03_R_BND","middle04_R_BND",
+        "pinky01_R_BND","pinky02_R_BND","pinky03_R_BND","pinky04_R_BND",
+        "thumb01_L_BND","thumb02_L_BND","thumb03_L_BND","thumb04_L_BND",
+        "index01_L_BND","index02_L_BND","index03_L_BND","index04_L_BND",
+        "middle01_L_BND","middle02_L_BND","middle03_L_BND","middle04_L_BND",
+        "pinky01_L_BND","pinky02_L_BND","pinky03_L_BND","pinky04_L_BND"};
+    
+
+
+    for($i=0; $i < size($hikJNTs); $i++ ){
+        if(`objExists ($nSp+$rigJNTs[$i])` == 1) {
+            Kaju_matchPos("Pos",($nSp+$rigJNTs[$i]),($nHIK+$hikJNTs[$i]));         
+        }
+    }
+
+    hikToggleLockDefinition();
+    hikGetInputType Kaju;
+    
+    // pole vector
+    string $armPole[],$legPole[];
+    $legPole = {"legPole_L_CTL","legPole_R_CTL"};
+    
+    for($i=0; $i < size($legPole); $i++ ){
+        $loc = substituteAllString($legPole[$i], "_CTL", "_LOC");  
+        spaceLocator -p 0 0 0 -n $loc;
+        $loc = `rename $loc ($nHIK+$loc)`;
+        Kaju_matchPos("all",($nSp+$legPole[$i]),$loc);
+        if($i==0){parent $loc ($nHIK+"LeftLeg");}
+        if($i==1){parent $loc ($nHIK+"RightLeg");}
+    }
+    
+    if(`radioButton -q -sl rb_IK_Kaju` == 1){
+        setAttr ($nSp+"armSetting_R_CTL.IKFK_blend") 0;
+        setAttr ($nSp+"armSetting_L_CTL.IKFK_blend") 0;        
+
+        $armPole = {"armPole_L_CTL","armPole_R_CTL"};
+        for($i=0; $i < size($armPole); $i++ ){
+            $loc = substituteAllString($armPole[$i], "_CTL", "_LOC");  
+            spaceLocator -p 0 0 0 -n $loc;
+            $loc = `rename $loc ($nHIK+$loc)`;
+            Kaju_matchPos("all",($nSp+$armPole[$i]),$loc);
+            if($i==0){parent $loc ($nHIK+"LeftForeArm");}
+            if($i==1){parent $loc ($nHIK+"RightForeArm");}
+        }
+    }
+    if(`radioButton -q -sl rb_FK_Kaju` == 1){
+        setAttr ($nSp+"armSetting_R_CTL.IKFK_blend") 1;
+        setAttr ($nSp+"armSetting_L_CTL.IKFK_blend") 1;     
+    }
+    
+   // connect HIK to Rig
+    $hikCons = {"Hips","Spine","Spine1","Spine2","LeftFoot","LeftToeBase","RightFoot","RightToeBase","Neck","Head",
+        "RightHandThumb1","RightHandThumb2","RightHandThumb3",
+        "RightHandIndex1","RightHandIndex2","RightHandIndex3",
+        "RightHandMiddle1","RightHandMiddle2","RightHandMiddle3",
+        "RightHandPinky1","RightHandPinky2","RightHandPinky3",
+        "LeftHandThumb1","LeftHandThumb2","LeftHandThumb3",
+        "LeftHandIndex1","LeftHandIndex2","LeftHandIndex3",
+        "LeftHandMiddle1","LeftHandMiddle2","LeftHandMiddle3",
+        "LeftHandPinky1","LeftHandPinky2","LeftHandPinky3"};
+    
+    $rigCons = {"root_CTL","back01_FK_CTL","back02_FK_CTL","chest_CTL","foot_L_CTL","toe_IK_L_CTL","foot_R_CTL","toe_IK_R_CTL","neck_CTL","head01_CTL",
+        "thumb01_R_CTL","thumb02_R_CTL","thumb03_R_CTL",
+        "index01_R_CTL","index02_R_CTL","index03_R_CTL",
+        "mid01_R_CTL","mid02_R_CTL","mid03_R_CTL",
+        "pinky01_R_CTL","pinky02_R_CTL","pinky03_R_CTL",
+        "thumb01_L_CTL","thumb02_L_CTL","thumb03_L_CTL",
+        "index01_L_CTL","index02_L_CTL","index03_L_CTL",
+        "mid01_L_CTL","mid02_L_CTL","mid03_L_CTL",
+        "pinky01_L_CTL","pinky02_L_CTL","pinky03_L_CTL"};
+
+    $fkHIK = {"LeftArm","LeftForeArm","LeftHand","RightArm","RightForeArm","RightHand"};
+    $fkRIG = {"shoulder_FK_L_CTL","elbow_FK_L_CTL","wrist_FK_L_CTL","shoulder_FK_R_CTL","elbow_FK_R_CTL","wrist_FK_R_CTL"};
+
+    $ikHIK = {"LeftHand","RightHand","armPole_L_LOC","armPole_R_LOC"};
+    $ikRIG = {"hand_L_CTL","hand_R_CTL","armPole_L_CTL","armPole_R_CTL"};
+
+
+    
+    if(`radioButton -q -sl rb_IK_Kaju` == 1){
+        $hikCons = stringArrayCatenate($hikCons, $ikHIK);
+        $rigCons = stringArrayCatenate($rigCons, $ikRIG);
+    }
+    if(`radioButton -q -sl rb_FK_Kaju` == 1){
+        $hikCons = stringArrayCatenate($hikCons, $fkHIK);
+        $rigCons = stringArrayCatenate($rigCons, $fkRIG);
+    }
+
+    for($i=0; $i < size($hikCons); $i++ ){  
+        if(`radioButton -q -sl rb_IK_Kaju` == 1){
+            if(`gmatch ($nHIK+$hikCons[$i]) "*_LOC*" ` == 1 ){
+                pointConstraint -mo -w 1 ($nHIK+$hikCons[$i])($nSp+$rigCons[$i]);
+            }else{
+                parentConstraint -mo -w 1 ($nHIK+$hikCons[$i])($nSp+$rigCons[$i]);
+            }
+        }
+        if(`radioButton -q -sl rb_FK_Kaju` == 1){
+                parentConstraint -mo -w 1 ($nHIK+$hikCons[$i])($nSp+$rigCons[$i]);
+        }
+    }  
+    select -cl  ;
+    if(`radioButton -q -sl rb_IK_Kaju` == 1){
+        print ("Connect HumanIK to Kaju Rig (Arm Ik) complete!" + "\n");
+    }
+    if(`radioButton -q -sl rb_FK_Kaju` == 1){
+        print ("Connect HumanIK to Kaju Rig (Arm FK) complete!" + "\n");
+    }
+}
+
+
+global proc Kaju_delHIK(){
+    
+    Kaju_hikDeleteSkeleton("Kaju"); 
+    //Kaju_setPose("Apose");
+    print ("Delete HumanIK \"Kaju_Reference\" !" + "\n");
+}   
+
+global proc Kaju_bakeRig(){
+    string $rigCons[],$fkRIG[],$ikRIG[],$nHIK,$ndPr[],$nSp;
+    float $minTime,$maxTime;
+    $nHIK = "Kaju";
+    $nHIK = $nHIK + "_";
+    $nSp = Kaju_getNameSpace();    
+    if(`objExists "Kaju_Reference"` == 1) {
+        $rigCons = {"root_CTL","back01_FK_CTL","back02_FK_CTL","chest_CTL","foot_L_CTL","toe_IK_L_CTL","foot_R_CTL","toe_IK_R_CTL","neck_CTL","head01_CTL",
+            "thumb01_R_CTL","thumb02_R_CTL","thumb03_R_CTL",
+            "index01_R_CTL","index02_R_CTL","index03_R_CTL",
+            "mid01_R_CTL","mid02_R_CTL","mid03_R_CTL",
+            "pinky01_R_CTL","pinky02_R_CTL","pinky03_R_CTL",
+            "thumb01_L_CTL","thumb02_L_CTL","thumb03_L_CTL",
+            "index01_L_CTL","index02_L_CTL","index03_L_CTL",
+            "mid01_L_CTL","mid02_L_CTL","mid03_L_CTL",
+            "pinky01_L_CTL","pinky02_L_CTL","pinky03_L_CTL"};
+
+        $fkRIG = {"shoulder_FK_L_CTL","elbow_FK_L_CTL","wrist_FK_L_CTL","shoulder_FK_R_CTL","elbow_FK_R_CTL","wrist_FK_R_CTL"};
+        $ikRIG = {"hand_L_CTL","hand_R_CTL","armPole_L_CTL","armPole_R_CTL"};
+            
+        if(`radioButton -q -sl rb_IK_Kaju` == 1){$rigCons = stringArrayCatenate($rigCons, $ikRIG);}
+        if(`radioButton -q -sl rb_FK_Kaju` == 1){$rigCons = stringArrayCatenate($rigCons, $fkRIG);}
+        
+
+        $rigCons = stringArrayAddPrefix($rigCons, $nSp );
+                
+        $animCurves = `ls -type "animCurve"`;
+        $minTime = `findKeyframe -w "first" $animCurves`;
+        $maxTime = `findKeyframe -w "last" $animCurves`;
+        playbackOptions -e -max $maxTime -min $minTime;
+        playbackOptions -e -max $maxTime -min $minTime;
+        
+        select -r $rigCons;
+        bakeResults  -t ($minTime +":"+$maxTime) -sm 1 -sb 1 -at tx -at ty -at tz -at rx -at ry -at rz ;
+        select -r $rigCons; filterCurve;
+        
+        for($i=0; $i < size($rigCons); $i++ ){
+            if(`gmatch ($rigCons[$i]) "*Pole*" ` == 1 ){
+                $ndPr = `listRelatives -typ pointConstraint $rigCons[$i]`;
+            }else{
+                $ndPr = `listRelatives -typ parentConstraint $rigCons[$i]`;
+            }   
+            if(`objExists $ndPr[0]` == 1) {
+                delete $ndPr[0];
+            }
+        }
+        Kaju_hikDeleteSkeleton("Kaju"); 
+        print ("Bake Animation to Kaju Rig complete!" + "\n");
+    }
+}
+
+global proc Kaju_clearScene(){
+    string $nSp,$sel[],$animCurves[],$fileRef; 
+    int $minTime,$maxTime,$amount;
+    $amount = 0;    
+    $nSp = Kaju_getNameSpace();  
+    
+    progressWindow -title "Working..." -progress $amount -status "Sleeping: 0%" ;
+    waitCursor -state on;
+    
+    //select top grp
+    progressWindow -e -s 5 -status ("Check ...");
+    $sel[0] = ($nSp + "CHKaju_Rig");
+
+
+    progressWindow -e -s 5 -status ("find first and last keyframe ...");  
+    //find first and last keyframe      
+    $animCurves = `ls -type "animCurve"`;
+    $minTime = `findKeyframe -w "first" $animCurves`;
+    $maxTime = `findKeyframe -w "last" $animCurves`;
+    playbackOptions -e -max $maxTime -min $minTime;
+
+
+    progressWindow -e -s 5 -status ("import Reference File ...");
+    //import Reference File
+    for($i=0; $i < size($sel); $i++ ){    
+        if(`referenceQuery -inr $sel[$i]` == 1){
+        $fileRef = `referenceQuery -f -shn $sel[$i]`;
+        file -importReference $fileRef;
+        }
+    }
+
+    progressWindow -e -s 5 -status ("get namespace ...");  
+    //get namespace
+    string $buffer[],$nSps[],$grpNsps[];
+    for($i=0; $i < size($sel); $i++ ){
+        $numTokens = `tokenize $sel[$i] ":"  $buffer`;
+        if($numTokens == 1){
+            $nSps[$i] = ("_");
+            $grpNsps[$i] = ("nonNamespace"+$i+"_GRP"); 
+        }
+        if($numTokens > 1){
+            $nSps[$i] = ($buffer[0]+":");
+            $grpNsps[$i] = ($buffer[0]+"_GRP");
+        }
+    }   
+    $nSps = stringArrayRemove({""}, $nSps);
+    $grpNsps = stringArrayRemove({""}, $grpNsps);
+
+    progressWindow -e -s 5 -status ("check group bindskin - \"Deformation_GRP\" ..."); 
+    //check group bindskin - "Deformation_GRP"
+    //find joint bindskin
+    string $grpBNDs[],$listBNDs[],$jntBNDs[],$allBNDs[];
+    for($i=0; $i < size($sel); $i++ ){
+        if($nSps[$i] == "_"){$nSps[$i] = "";}
+        if( `objExists ($nSps[$i]+"jointBindSkin_GRP")` == 1){
+            $grpBNDs[$i] = ($nSps[$i]+"jointBindSkin_GRP");
+            //get joint bindskin
+            $listBNDs = `listRelatives -c $grpBNDs[$i]`;
+            $jntBNDs[$i] = $listBNDs[0];
+        }
+    }
+
+    progressWindow -e -s 5 -status ("create group nameSpace ..."); 
+    //group objs export
+    for($i=0; $i < size($sel); $i++ ){
+        if(size($sel) > 1){
+            group -em -n $grpNsps[$i];
+        }else if(size($sel) == 1 && size($grpBNDs) > 1){
+            group -em -n $grpNsps[$i];
+        }
+    }
+
+    progressWindow -e -s 20 -status ("bake animation ..."); 
+    //bake animation
+    select -r $jntBNDs; select -hi;
+    $allBNDs = `ls -sl -type joint`;
+    select -r $allBNDs;
+    bakeResults  -t ($minTime +":"+$maxTime) -sm 1 -sb 1 -at tx -at ty -at tz -at rx -at ry -at rz ;
+    
+    progressWindow -e -s 10 -status ("Euler Filter ..."); 
+    select -r $allBNDs; filterCurve;
+    select -r $jntBNDs; select -hi; DeleteConstraints;
+
+    progressWindow -e -s 5 -status ("check group Geometry - \"geoREN_GRP\" ..."); 
+    //check group Geometry - "geoREN_GRP"
+    string $grpGEOs[],$listGEOs[];
+    for($i=0; $i < size($sel); $i++ ){
+        if($nSps[$i] == "_"){$nSps[$i] = "";}
+        if( `objExists ($nSps[$i]+"geoREN_GRP")` == 1){
+            $grpGEOs[$i] = ($nSps[$i]+"geoREN_GRP");
+            //get joint bindskin
+            $listGEOs = `listRelatives -c $grpGEOs[$i]`;
+            if(size($sel) > 1){
+                parent $listGEOs $grpNsps[$i];
+            }else if(size($sel) == 1 && size($grpBNDs) > 1){
+                parent $listGEOs $grpNsps[$i];
+            }else{
+                parent -w $listGEOs;
+            }
+        }
+    }
+
+    progressWindow -e -s 5 -status ("Clean Up ...");   
+    //clear scene
+    //parent joint bindskin
+    for($i=0; $i < size($sel); $i++ ){
+        select -r $jntBNDs[$i];
+        if(size($sel) > 1){
+            parent $jntBNDs[$i] $grpNsps[$i];
+        }else if(size($sel) == 1 && size($grpBNDs) > 1){
+            parent $jntBNDs[$i] $grpNsps[$i];
+        }else{
+            parent -w $jntBNDs[$i];
+        }
+        progressWindow -e -s (5*2) -status ("delete Top Group ...");   
+        delete $sel[$i];
+    }
+    
+    progressWindow -e -s 5 -status ("delete namespace ...");      
+    // delete namespace; 
+    for($i=0; $i < size($nSps); $i++ ){
+        if($nSps[$i] != ""){
+            $numTokens = `tokenize $nSps[$i] ":"  $buffer`;
+            namespace -mv $buffer[0] ":" -f;
+            namespace -rm $buffer[0];
+        }
+    }
+    
+    progressWindow -e -pr 100 -status ("Finished ...");     
+    waitCursor -state off;
+    progressWindow -e -ep ;     
+    select -cl  ;
+}
+
