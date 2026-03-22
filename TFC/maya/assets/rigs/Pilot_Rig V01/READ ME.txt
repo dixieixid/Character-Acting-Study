@@ -1,0 +1,29 @@
+Pilot Rig.
+
+Model by David Puigvert.
+
+Rig by Said Vazquez.
+
+Compatibility: Maya 2020+
+
+This rig incluides a picker(dreamwall) and textures for the whole body on the textures folder.
+Terms of use:
+
+This rig is for educational, non-commercial use only. You are allowed to use this rig on your 
+animation reel or portafolio. Also non-commercial animation challenges and contest like AnimChallange
+and 11 Second Club are ok! ENJOY!
+
+
+CREDITS:
+Model by David Puigvert
+ArtStation: David Puigvert
+
+Rig by Said Vazquez
+ArtStation: Said Vazquez
+Twitter: @SaidVazmor
+
+Original Concept by Ming Zhe Zhou
+ArtStation: Ming Zhe Zhou
+
+For bugs or problems email: said.vazquezm6@gmail.com
+THANK YOU!
