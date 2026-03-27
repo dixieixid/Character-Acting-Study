@@ -1,0 +1,117 @@
+/* Variables */
+$ctrlTypeButtonSize: calc(16px * $SCALE_FACTOR);
+$ctrlTypeButtonColor: #fff;
+$ctrlTypeButtonColorHover: #00d5ff;
+$ctrlTypeButtonColorPressed: #019cbc;
+
+$colorSwatchButtonSize: $ctrlTypeButtonSize;
+
+/* Section */
+
+.section .group-box__title-bar {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Color Swatch Button */
+
+.color-swatch-button {
+    padding: 0;
+    width: $colorSwatchButtonSize;
+    height: $colorSwatchButtonSize;
+}
+
+.color-swatch-button:hover {
+    border: 2px solid rgba(255, 255, 255, 0.75);
+}
+
+.color-swatch-button:pressed {
+    border: 2px solid rgba(0, 0, 0, 0.75);
+}
+
+/* Ctrl Type Button */
+
+.ctrls-container {
+    background: rgba(0, 0, 0, 0.065);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.ctrl-type-button {
+    padding: 0;
+    min-width: $ctrlTypeButtonSize;
+    min-height: $ctrlTypeButtonSize;
+    max-width: $ctrlTypeButtonSize;
+    max-height: $ctrlTypeButtonSize;
+    background: none no-repeat center;
+    border: none;
+
+    qproperty-tint: $ctrlTypeButtonColor;
+    qproperty-tintHover: $ctrlTypeButtonColorHover;
+    qproperty-tintPressed: $ctrlTypeButtonColorPressed;
+}
+
+.ctrl-type-button.toggle-button__button--active {
+    qproperty-tint: $ctrlTypeButtonColorHover;
+}
+
+
+/* Operation Buttons */
+
+.apply-button {
+    font-weight: bold;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgb(62, 146, 66);
+}
+
+.apply-button:hover {
+    color: rgba(255, 255, 255, 1);
+    background: rgb(97, 168, 78);
+}
+
+.apply-button:pressed {
+    color: rgba(255, 255, 255, 0.75);
+    background: rgb(27, 57, 34);
+}
+
+.apply-button:disabled {
+    color: rgba(255, 255, 255, 0.35);
+    background: rgba(97, 168, 78, 0.1);
+}
+
+.cancel-button {
+    padding: calc(4px * $SCALE_FACTOR);
+    color: rgba(255, 255, 255, 0.75);
+    background: rgb(208, 82, 75);
+}
+
+.cancel-button:hover {
+    color: rgba(255, 255, 255, 1);
+    background: rgb(246, 97, 89);
+}
+
+.cancel-button:pressed {
+    color: rgba(255, 255, 255, 0.75);
+    background: rgb(87, 33, 33);
+}
+
+/* Attribute Swapper */
+
+.attr-swapper__title {
+    padding: calc(4px * $SCALE_FACTOR);
+    background: rgba(0, 0, 0, 0.25);
+}
+
+
+/* Rotate Order Swapper */
+
+.rotate-order-swapper__row--even {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.rotate-order-swapper__recommended {
+    color: rgb(105, 197, 109);
+}
+
+.rotate-order-swapper__recommended--world {
+    color: rgb(105, 180, 197);
+}

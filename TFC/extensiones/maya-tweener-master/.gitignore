@@ -1,0 +1,10 @@
+.idea/*
+*.afdesign
+*.pyc
+
+_releases/*
+_wip/*
+
+venv/*
+
+.DS_Store

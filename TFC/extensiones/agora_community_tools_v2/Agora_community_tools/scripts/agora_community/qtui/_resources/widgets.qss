@@ -1,0 +1,302 @@
+/* Scroll Box */
+
+.scroll-box {
+    background: transparent;
+    border: none;
+}
+
+.scroll-box__container {
+    background: transparent;
+}
+
+/* Layout Separator */
+
+.layout-separator {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.layout-separator--horizontal {
+    min-height: 1px;
+    max-height: 1px;
+    margin: calc(2px * $SCALE_FACTOR) 0;
+}
+
+.layout-separator--vertical {
+    min-width: 1px;
+    max-width: 1px;
+    margin: 0 calc(2px * $SCALE_FACTOR);
+}
+
+/* Busy Overlay */
+
+.busy-overlay {
+    background: rgba(60, 60, 60, 0.65);
+}
+
+.busy-overlay__message {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* Group Box */
+
+.group-box__collapse-trigger {
+    min-width: calc(16px * $SCALE_FACTOR);
+    padding: calc(2px * $SCALE_FACTOR);
+    font-size: calc(16px * $SCALE_FACTOR);
+    border: none;
+    background: none;
+}
+
+.group-box__collapse-trigger:hover {
+    background: none;
+}
+
+.group-box__checkbox {
+    margin-left: calc(4px * $SCALE_FACTOR);
+}
+
+.group-box__checkbox .checkbox__indicator {
+    margin-left: calc(4px * $SCALE_FACTOR);
+}
+
+.group-box__title-bar {
+    background: rgba(255, 255, 255, 0.135);
+}
+
+.group-box__title-icon {
+    padding: calc(2px * $SCALE_FACTOR) 0;
+    padding-left: calc(4px * $SCALE_FACTOR);
+    border: none;
+    background: none;
+}
+
+.group-box__title-icon:hover,
+.group-box__title-icon:pressed {
+    background: none;
+}
+
+.group-box__title-bar--collapsable .group-box__title-icon {
+    padding-left: 0;
+}
+
+.group-box__title-label {
+    padding: calc(2px * $SCALE_FACTOR) calc(4px * $SCALE_FACTOR);
+    padding-left: calc(9px * $SCALE_FACTOR);
+    text-align: left;
+    font-weight: bold;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    background: none;
+}
+
+.group-box__title-label:hover,
+.group-box__title-label:pressed {
+    background: none;
+}
+
+.group-box__title-bar--collapsable .group-box__title-label {
+    padding-left: 0;
+}
+
+.group-box__title-bar--with-icon .group-box__title-label {
+    padding-left: 6px;
+}
+
+.group-box__buttons-bar > QPushButton,
+.group-box__buttons-bar > .menu-button > QPushButton {
+    padding: 3px;
+    border: none;
+    background: none;
+}
+
+.group-box__buttons-bar > QPushButton:hover,
+.group-box__buttons-bar > .menu-button > QPushButton:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.group-box__buttons-bar > QPushButton:pressed,
+.group-box__buttons-bar > .menu-button > QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 0.575);
+}
+
+.group-box__buttons-bar .menu-button--with-default-action .menu-button__trigger {
+    border-left: none;
+}
+
+.group-box__content-box {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.group-box--colored > .group-box__title-bar {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom-color: rgba(0, 0, 0, 0.4);
+}
+
+.group-box--colored > .group-box__content-box {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: none;
+}
+
+.group-box--colored > .group-box__content-box QLineEdit[readOnly="false"]:enabled {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.group-box--colored > .group-box__content-box > QComboBox:enabled {
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.group-box--colored > .group-box__content-box > QPushButton {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.group-box--colored > .group-box__content-box > QPushButton:hover {
+    color: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.group-box--colored > .group-box__content-box > QPushButton:pressed {
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.group-box--colored > .group-box__content-box > .slider > QSlider::groove:horizontal {
+    height: calc(5px * $SCALE_FACTOR);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.group-box--colored > .group-box__content-box > .slider > QSlider::handle:horizontal {
+    width: calc(6px * $SCALE_FACTOR);
+    margin: calc(-4px * $SCALE_FACTOR) 0;
+    border-radius: calc(2px * $SCALE_FACTOR);
+    background: #bbb;
+}
+
+.group-box--colored > .group-box__content-box .icon-button {
+    padding: 4px 6px;
+    color: rgba(255, 255, 255, 0.65);
+    background: none;
+}
+
+.group-box--colored > .group-box__content-box .icon-button:hover {
+    color: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.group-box--colored > .group-box__content-box .icon-button:pressed {
+    color: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Popup Panel */
+
+.popup-panel {
+    border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Icon Button */
+
+.icon-button {
+    max-width: calc(16px * $SCALE_FACTOR);
+    padding: 2px 5px;
+    background: none;
+    border: none;
+    border-radius: 2px;
+}
+
+.icon-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.icon-button:pressed {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.icon-button:disabled {
+    background: none;
+}
+
+/* Toggle Button */
+
+.toggle-button__button {
+    padding: calc(5px * $SCALE_FACTOR);
+    font-weight: bold;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-right-width: 0;
+    border-radius: 0;
+}
+
+.toggle-button__button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.toggle-button__button:pressed {
+    background: rgba(0, 0, 0, 0.25);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.toggle-button__button--last {
+    border-right-width: 1px;
+}
+
+.toggle-button__button--active {
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.toggle-button__button--active:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Menu Button */
+
+.menu-button::menu-indicator {
+    width: 0;
+}
+
+/* Context Menu Button */
+
+.context-menu-button__indicator {
+    max-width: 0;
+    max-height: 0;
+    margin-right: calc(2px * $SCALE_FACTOR);
+    margin-bottom: calc(2px * $SCALE_FACTOR);
+    background: none;
+    border: calc(3px * $SCALE_FACTOR) solid rgba(255, 255, 255, 0.5);
+    border-left-color: rgba(0, 0, 0, 0.005);
+    border-top-color: rgba(0, 0, 0, 0.005);
+}
+
+.context-menu-button__indicator--disabled {
+    border-right-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.context-menu-button--with-icon .context-menu-button__indicator {
+    border-width: calc(2px * $SCALE_FACTOR);
+}
+
+/* Slider */
+
+.slider__reset-button {
+    max-width: calc(14px * $SCALE_FACTOR);
+    padding: 2px 4px;
+    background: none;
+    border: none;
+}
+
+.slider__reset-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.slider__reset-button:pressed {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.slider__reset-button:disabled {
+    background: none;
+}

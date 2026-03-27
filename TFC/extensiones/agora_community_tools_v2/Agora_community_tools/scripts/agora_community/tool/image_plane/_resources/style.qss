@@ -1,0 +1,52 @@
+.form__inline-button {
+    padding: 0;
+}
+
+.form__icon-button {
+    color: rgba(255, 255, 255, 0.6);
+    background: none;
+}
+
+.form__icon-button:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.form__icon-button:hover:pressed {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.form__icon-button:disabled {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.image-plane-item__image-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.image-plane-item__camera-label {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.image-plane-item--hidden .image-plane-item__image-label,
+.image-plane-item--hidden .image-plane-item__camera-label {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.image-plane-item__action-button {
+    color: rgba(255, 255, 255, 0.65);
+    background: none;
+}
+
+.image-plane-item__action-button:hover,
+.image-plane-item--hidden .image-plane-item__action-button:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.image-plane-item__action-button:pressed,
+.image-plane-item--hidden .image-plane-item__action-button:pressed {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.image-plane-item--hidden .image-plane-item__action-button {
+    color: rgba(255, 255, 255, 0.25);
+}

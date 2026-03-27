@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg128500"
+   sodipodi:docname="overlap.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs128504" />
+  <sodipodi:namedview
+     id="namedview128502"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="true"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="410.82904"
+     inkscape:cy="447.59859"
+     inkscape:window-width="2550"
+     inkscape:window-height="1353"
+     inkscape:window-x="874"
+     inkscape:window-y="1090"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg128500">
+    <inkscape:grid
+       type="xygrid"
+       id="grid131549" />
+  </sodipodi:namedview>
+  <rect
+     style="fill:#bdbdbd;fill-opacity:1;stroke:#2a2a2a;stroke-width:10.0555;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="rect5348-76-6"
+     width="116.32666"
+     height="35.092957"
+     x="-125.33435"
+     y="342.47586"
+     rx="3.5137563"
+     transform="rotate(-35)" />
+  <g
+     id="g5429-2"
+     transform="matrix(0.36428202,-1.0008567,1.0008567,0.36428202,-129.11606,444.31619)"
+     style="fill:#25a8df;fill-opacity:1">
+    <rect
+       style="fill:#bdbdbd;fill-opacity:1;stroke:#2a2a2a;stroke-width:9.441;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+       id="rect5348-7-7-8"
+       width="109.21774"
+       height="32.948368"
+       x="290.12866"
+       y="239.52582"
+       rx="3.2990248" />
+    <circle
+       style="fill:#25a8df;fill-opacity:1;stroke:#2a2a2a;stroke-width:7.91485;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+       id="path3807-6-8-9"
+       cx="438.49713"
+       cy="256"
+       r="50.765587" />
+    <circle
+       style="fill:#25a8df;fill-opacity:1;stroke:#2a2a2a;stroke-width:7.91485;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+       id="path3807-8-6-7"
+       cx="259.48932"
+       cy="256"
+       r="50.765587" />
+  </g>
+  <rect
+     style="fill:#bdbdbd;fill-opacity:1;stroke:#2a2a2a;stroke-width:10;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="rect5348-76"
+     width="116.32667"
+     height="35.09296"
+     x="-7.6174393"
+     y="376.55026"
+     rx="3.5137565"
+     transform="rotate(-15)" />
+  <rect
+     style="fill:#bdbdbd;fill-opacity:1;stroke:#2a2a2a;stroke-width:10;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="rect5348-7-7"
+     width="116.32667"
+     height="35.09296"
+     x="39.152401"
+     y="401.48642"
+     rx="3.5137565"
+     transform="rotate(-35)" />
+  <circle
+     style="fill:#25a8df;fill-opacity:1;stroke:#2a2a2a;stroke-width:10;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="path3807-6-8"
+     cx="197.17809"
+     cy="419.0329"
+     r="54.069889"
+     transform="rotate(-35)" />
+  <circle
+     style="fill:#25a8df;fill-opacity:1;stroke:#2a2a2a;stroke-width:10;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="path3807-8-6"
+     cx="6.5187602"
+     cy="419.0329"
+     r="54.069889"
+     transform="rotate(-35)" />
+  <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+  <rect
+     style="fill:#bdbdbd;stroke:#2a2a2a;stroke-width:10.0555;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;fill-opacity:1"
+     id="rect5348"
+     width="116.32666"
+     height="35.092957"
+     x="100.61984"
+     y="375.27432"
+     rx="3.5137563" />
+  <rect
+     style="fill:#bdbdbd;stroke:#2a2a2a;stroke-width:10.0555;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;fill-opacity:1"
+     id="rect5348-7"
+     width="116.32666"
+     height="35.092957"
+     x="281.60849"
+     y="375.27432"
+     rx="3.5137563" />
+  <circle
+     style="fill:#25a8df;stroke:#2a2a2a;stroke-width:8.43002;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="path3807"
+     cx="70.233498"
+     cy="392.8208"
+     r="54.069889" />
+  <circle
+     style="fill:#25a8df;stroke:#2a2a2a;stroke-width:8.43002;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="path3807-6"
+     cx="439.63419"
+     cy="392.8208"
+     r="54.069889" />
+  <circle
+     style="fill:#25a8df;stroke:#2a2a2a;stroke-width:8.43002;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="path3807-8"
+     cx="248.97485"
+     cy="392.8208"
+     r="54.069889" />
+</svg>

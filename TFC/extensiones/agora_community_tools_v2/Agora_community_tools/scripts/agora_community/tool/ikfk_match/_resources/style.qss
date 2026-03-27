@@ -1,0 +1,76 @@
+.toggle-button__button {
+    padding: 5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.toggle-button--disabled .toggle-button__button {
+    color: rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.toggle-button__button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.toggle-button__button:pressed {
+    background: rgba(0, 0, 0, 0.25);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.toggle-button__button--first {
+    border-right: none;
+}
+
+.toggle-button__button--middle {
+    border-left-width: 1px;
+    border-right-width: 1px;
+}
+
+.toggle-button__button--last {
+    border-left: none;
+}
+
+.toggle-button__button--active {
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.toggle-button__button--active:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.toggle-button--disabled .toggle-button__button--active {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.mode-toggle {
+    background: #556978;
+}
+
+.range-toggle {
+    background: #5e7856;
+}
+
+.keys-toggle {
+    background: #6d5351;
+}
+
+.toggle-button--disabled.keys-toggle {
+    background: #514645;
+}
+
+.layout-separator {
+    min-height: 2px;
+    max-height: 2px;
+    margin: 2px 0;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.info-label {
+    font-weight: bold;
+}

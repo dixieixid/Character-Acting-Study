@@ -1,0 +1,118 @@
+QCheckBox::indicator {
+    /* Fix checkbox scaling for Maya > 2022.1. */
+    width: calc(12px * $SCALE_FACTOR);
+    height: calc(12px * $SCALE_FACTOR);
+}
+
+QPushButton,
+QListWidget,
+QTreeView {
+    /* Fix icons scaling for Maya 2022. */
+    qproperty-iconSize: calc(16px * $SCALE_FACTOR);
+}
+
+QLineEdit {
+    padding: calc(1px * $SCALE_FACTOR) calc(2px * $SCALE_FACTOR);
+    border: none;
+    border-radius: 2px;
+}
+
+QLineEdit:read-only {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+QLineEdit:disabled {
+    color: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+QPlainTextEdit {
+    padding: 0;
+    border: none;
+}
+
+QPlainTextEdit[readOnly="true"] {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+QPushButton {
+    padding: calc(5px * $SCALE_FACTOR);
+    text-align: center;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.135);
+    border: 1px solid rgba(255, 255, 255, 0.035);
+}
+
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 0.236);
+    border-color: rgba(255, 255, 255, 0.04);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 0.575);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+QPushButton:disabled {
+    color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.015);
+}
+
+QListWidget {
+    background: #373737;
+    alternate-background-color: #323232;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    outline: none;
+}
+
+QListWidget::item {
+    padding: 0.1em;
+    border: none;
+}
+
+QListWidget::item:selected {
+    background: #5285a6;
+}
+
+QTreeView {
+    background: #373737;
+    alternate-background-color: #323232;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    outline: none;
+}
+
+QTreeView::item {
+    padding: 0.1em;
+}
+
+QTreeView::item:selected {
+    background: #5285a6;
+}
+
+QHeaderView::section {
+    padding-left: 0.5em;
+}
+
+QHeaderView::up-arrow {
+    width: 0;
+    height: 0;
+    margin-right: calc(6px * $SCALE_FACTOR);
+    margin-top: calc(-5px * $SCALE_FACTOR);
+    border: calc(5px * $SCALE_FACTOR) solid rgba(0, 0, 0, 0.005);
+    border-bottom-color: rgba(255, 255, 255, 0.65);
+
+}
+
+QHeaderView::down-arrow {
+    width: 0;
+    height: 0;
+    margin-right: calc(6px * $SCALE_FACTOR);
+    margin-bottom: calc(-5px * $SCALE_FACTOR);
+    border: calc(5px * $SCALE_FACTOR) solid rgba(0, 0, 0, 0.005);
+    border-top-color: rgba(255, 255, 255, 0.65);
+}

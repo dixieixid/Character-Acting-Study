@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="cube.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="2.0058594"
+     inkscape:cx="227.08471"
+     inkscape:cy="255.75073"
+     inkscape:window-width="3440"
+     inkscape:window-height="1377"
+     inkscape:window-x="-8"
+     inkscape:window-y="1078"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+  <path
+     d="m 239.75676,9.0341204 c 10.43505,-3.8511262 22.05144,-3.8511262 32.48649,0 L 477.00661,84.109424 c 18.6059,6.832008 31.00983,24.532226 31.00983,44.417896 v 255.26509 c 0,19.78723 -12.40393,37.50714 -31.00983,44.29977 l -204.76336,74.22671 c -10.43505,4.72531 -22.05144,4.72531 -32.48649,0 L 34.97371,428.09218 C 16.357965,421.29955 3.983564,403.57964 3.983564,383.79241 V 128.52732 c 0,-19.88567 12.374401,-37.585888 30.990146,-44.417896 z m 21.65766,29.5745226 c -4.33153,-1.279771 -7.38329,-1.279771 -10.82883,0 L 47.436711,113.07163 256.00001,194.18942 464.60267,113.07163 Z M 45.812386,398.559 240.24898,469.8324 V 222.63971 L 35.485619,142.21103 v 241.58138 c 0,6.59574 4.1248,12.50238 10.326767,14.76659 z M 271.75103,469.8324 466.17778,398.559 c 6.20196,-2.26421 10.33661,-8.17085 10.33661,-14.76659 V 142.21103 l -204.76336,80.42868 z"
+     id="path2"
+     style="stroke:#000000;stroke-width:4.9222;stroke-dasharray:none;stroke-opacity:1" />
+</svg>
